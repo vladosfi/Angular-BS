@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BestService.API.Data;
+using BS.API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace BestService.API.Controllers
+namespace BS.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

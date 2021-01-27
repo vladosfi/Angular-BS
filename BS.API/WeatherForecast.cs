@@ -1,6 +1,6 @@
 using System;
 
-namespace BestService.API
+namespace BS.API
 {
     public class WeatherForecast
     {

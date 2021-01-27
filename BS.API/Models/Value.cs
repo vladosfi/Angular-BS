@@ -1,4 +1,4 @@
-namespace BestService.API.Models
+namespace BS.API.Models
 {
     public class Value
     {
