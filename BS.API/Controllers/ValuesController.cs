@@ -11,7 +11,7 @@ namespace BS.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ValuesController : ControllerBase
+    public class ValuesController : BaseController
     {
         private static readonly string[] Summaries = new[]
         {
