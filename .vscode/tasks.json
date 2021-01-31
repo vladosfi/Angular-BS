@@ -6,13 +6,12 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "build"
+                "build",
+                "${workspaceFolder}/BS.API/BestService.API.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
             ],
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": "$tsc"
-            //"problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile"
         },
         {
             "label": "publish",

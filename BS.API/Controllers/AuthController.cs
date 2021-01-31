@@ -58,7 +58,7 @@ namespace BS.API.Controllers
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
 
-            var userFromRepo = await this.repo.Login(userForLoginDto.Username, userForLoginDto.Password);
+            var userFromRepo = await this.repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
 
             if (userFromRepo == null)
             {
