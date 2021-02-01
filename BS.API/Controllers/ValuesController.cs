@@ -10,16 +10,12 @@ using Microsoft.Extensions.Logging;
 
 namespace BS.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class ValuesController : BaseController
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<ValuesController> logger;
         private readonly DataContext context;
 
@@ -45,19 +41,5 @@ namespace BS.API.Controllers
             var value = await context.Values.FirstOrDefaultAsync(x => x.Id == id);
             return Ok(value);
         }
-
-        // [HttpGet]
-        // public IEnumerable<WeatherForecast> Get()
-        // {
-        //     //throw new Exception("TEst exception");
-        //     var rng = new Random();
-        //     return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //     {
-        //         Date = DateTime.Now.AddDays(index),
-        //         TemperatureC = rng.Next(-20, 55),
-        //         Summary = Summaries[rng.Next(Summaries.Length)]
-        //     })
-        //     .ToArray();
-        // }
     }
 }
