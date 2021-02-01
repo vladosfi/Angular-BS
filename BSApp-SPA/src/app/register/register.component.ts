@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AlertifyService } from '../_services/alertify.service';
 import { AuthService } from '../_services/auth.service';
 
 @Component({
@@ -11,22 +12,24 @@ export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private alerify: AlertifyService
+  ) { }
 
   ngOnInit(): void {
   }
 
   register() {
     this.authService.register(this.model).subscribe(() => {
-      console.log('Registration successful')
+      this.alerify.success('Registration successful')
     }, error => {
-      console.log(error);
+      this.alerify.error(error);
     });
   }
 
   cancel() {
-    this.cancelRegister.emit(false);
-    console.log('Canceled');
+    this.cancelRegister.emit(false); 
   }
 
 }
