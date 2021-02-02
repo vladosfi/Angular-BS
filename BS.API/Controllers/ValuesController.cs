@@ -14,7 +14,7 @@ namespace BS.API.Controllers
     [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
-    public class ValuesController : BaseController
+    public class ValuesController : ControllerBase
     {
         private readonly ILogger<ValuesController> logger;
         private readonly DataContext context;

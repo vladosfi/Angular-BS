@@ -11,13 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 
-
-
 namespace BS.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : BaseController
+    public class AuthController : ControllerBase
     {
         private const string BadRequestUserExist = "Username already exist";
 
