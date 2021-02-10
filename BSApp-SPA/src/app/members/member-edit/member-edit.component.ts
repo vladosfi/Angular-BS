@@ -20,27 +20,39 @@ export class MemberEditComponent implements OnInit {
     }
   }
   user: User;
+  photoUrl: string;
 
   constructor(
     private route: ActivatedRoute,
     private alertify: AlertifyService,
     private userService: UserService,
-    private authService: AuthService) { }
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
+    this.route.data.subscribe((data) => {
       this.user = data['user'];
-      console.log(this.user);
-    })
+      this.authService.currentPhotoUrl.subscribe(
+        (photoUrl) => (this.photoUrl = photoUrl)
+      );
+    });
   }
 
   updateUser() {
-    this.userService.updateUser(this.authService.decodedToken.nameid, this.user).subscribe(
-      next => {
-        this.alertify.success('Profile updated successully');
-        this.editForm.reset(this.user);
-      }, error => {
-        this.alertify.error(error);
-      });
+    this.userService
+      .updateUser(this.authService.decodedToken.nameid, this.user)
+      .subscribe(
+        (next) => {
+          this.alertify.success('Profile updated successully');
+          this.editForm.reset(this.user);
+        },
+        (error) => {
+          this.alertify.error(error);
+        }
+      );
+  }
+
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
   }
 }

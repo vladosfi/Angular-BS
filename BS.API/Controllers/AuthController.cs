@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BS.API.Data;
 using BS.API.Dtos;
 using BS.API.Models;
@@ -21,12 +22,15 @@ namespace BS.API.Controllers
 
         private IAuthRepository repo;
         private IConfiguration config;
+        private readonly IMapper mapper;
 
         public AuthController(
             IAuthRepository repo,
-            IConfiguration config)
+            IConfiguration config,
+            IMapper mapper)
         {
             this.config = config;
+            this.mapper = mapper;
             this.repo = repo;
         }
 
@@ -83,9 +87,13 @@ namespace BS.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return Ok(new {
-                token = tokenHandler.WriteToken(token)
+            var user = this.mapper.Map<UserForListDto>(userFromRepo);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token),
+                user
             });
-        } 
+        }
     }
 }
