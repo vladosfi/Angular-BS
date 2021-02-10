@@ -35,18 +35,23 @@ export class MemberDetailComponent implements OnInit {
       preview: false,
     }];
 
-    this.galleryImages = this.galleryImages = this.getImages();
+    this.galleryImages = this.getImages();
   }
 
   getImages() {
     const imageUrls = [];
     for (let i = 0; i < this.user.photos.length; i++) {
-      imageUrls.push({
+
+      let image = {
         small: this.user.photos[i].url,
         medium: this.user.photos[i].url,
         big: this.user.photos[i].url,
         description: this.user.photos[i].description
-      });
+      };
+
+      if(image.small && image.medium && image.big){
+        imageUrls.push(image);
+      }
     }
     return imageUrls;
   }

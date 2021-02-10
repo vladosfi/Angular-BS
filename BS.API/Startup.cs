@@ -87,7 +87,6 @@ namespace BS.API
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -96,6 +95,7 @@ namespace BS.API
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("bs", "api/", new { controller = "Photos", action = "GetPhoto" });
                 endpoints.MapControllers();
             });
         }

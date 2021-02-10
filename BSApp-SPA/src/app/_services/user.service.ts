@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -25,5 +26,9 @@ export class UserService {
 
   updateUser(id: number, user: User): Observable<User> {
     return this.http.put<User>(this.baseUrl + `users/${id}`, user);
+  }
+
+  setMainPhoto(userId: number, id: number) {
+    return this.http.post(this.baseUrl + `users/${userId}/photos/${id}/setMain`, {});
   }
 }
