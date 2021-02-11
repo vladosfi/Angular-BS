@@ -36,6 +36,7 @@ namespace BS.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ActionName(nameof(GetUser))]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await this.repo.GetUser(id);

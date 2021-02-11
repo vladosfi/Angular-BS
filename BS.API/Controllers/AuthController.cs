@@ -46,14 +46,14 @@ namespace BS.API.Controllers
                 return BadRequest(BadRequestUserExist);
             }
 
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.Username,
-            };
+            var userToCreate = this.mapper.Map<User>(userForRegisterDto);
 
             var createdUser = await this.repo.Register(userToCreate, userForRegisterDto.Password);
 
-            return StatusCode(201);
+            var userToReturn = this.mapper.Map<UserForDetailedDto>(createdUser);
+
+            return CreatedAtAction(nameof(UsersController.GetUser), new { controller="Users", id = createdUser.Id }, userToReturn);
+
         }
 
         [HttpPost("login")]
