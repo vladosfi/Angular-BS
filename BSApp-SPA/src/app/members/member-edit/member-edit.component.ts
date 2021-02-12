@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TimeagoPipe } from 'ngx-timeago';
 import { User } from 'src/app/_modules/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
 import { AuthService } from 'src/app/_services/auth.service';
@@ -21,6 +22,7 @@ export class MemberEditComponent implements OnInit {
   }
   user: User;
   photoUrl: string;
+  live: TimeagoPipe;
 
   constructor(
     private route: ActivatedRoute,
