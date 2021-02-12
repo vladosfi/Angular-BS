@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BS.API.Helpers;
 using BS.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,11 +45,11 @@ namespace BS.API.Data
             return user;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = await this.context.Users.Include(p => p.Photos).ToListAsync();
+            var users = this.context.Users.Include(p => p.Photos);
 
-            return users;
+            return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 
         public async Task<bool> SaveAll()

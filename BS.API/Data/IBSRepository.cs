@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BS.API.Helpers;
 using BS.API.Models;
 
 namespace BS.API.Data
@@ -12,7 +13,7 @@ namespace BS.API.Data
 
         Task<bool> SaveAll();
 
-        Task<IEnumerable<User>> GetUsers();
+        Task<PagedList<User>> GetUsers(UserParams userParams);
 
         Task<User> GetUser(int id);
 
