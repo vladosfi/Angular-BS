@@ -16,6 +16,21 @@ namespace BS.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.2");
 
+            modelBuilder.Entity("BS.API.Models.Like", b =>
+                {
+                    b.Property<int>("LikerId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("LikeeId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("LikerId", "LikeeId");
+
+                    b.HasIndex("LikeeId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("BS.API.Models.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -111,6 +126,25 @@ namespace BS.API.Migrations
                     b.ToTable("Values");
                 });
 
+            modelBuilder.Entity("BS.API.Models.Like", b =>
+                {
+                    b.HasOne("BS.API.Models.User", "Likee")
+                        .WithMany("Likers")
+                        .HasForeignKey("LikeeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BS.API.Models.User", "Liker")
+                        .WithMany("Likees")
+                        .HasForeignKey("LikerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Likee");
+
+                    b.Navigation("Liker");
+                });
+
             modelBuilder.Entity("BS.API.Models.Photo", b =>
                 {
                     b.HasOne("BS.API.Models.User", "User")
@@ -124,6 +158,10 @@ namespace BS.API.Migrations
 
             modelBuilder.Entity("BS.API.Models.User", b =>
                 {
+                    b.Navigation("Likees");
+
+                    b.Navigation("Likers");
+
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
