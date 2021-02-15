@@ -37,6 +37,21 @@ namespace BS.API.Data
             return await this.context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
         }
 
+        public async Task<Message> GetMessage(int id)
+        {
+            return await this.context.Messages.FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public Task<PagedList<Message>> GetMessagesForUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Message>> GetMessagesThread(int userId, int recipientId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Photo> GetPhoto(int id)
         {
             var photo = await this.context.Photos.FirstOrDefaultAsync(p => p.Id == id);
@@ -55,21 +70,23 @@ namespace BS.API.Data
         {
             var users = this.context.Users.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
 
-            users = users.Where(u => u.Id != userParams.UserId);
-
-            users = users.Where(u => u.Gender == userParams.Gender);
-
             if (userParams.Likers)
             {
                 var userLikers = await GetUserLikes(userParams.UserId, userParams.Likers);
                 users = users.Where(u => userLikers.Contains(u.Id));
             }
-
-            if (userParams.Likees)
+            else if (userParams.Likees)
             {
                 var userLikees = await GetUserLikes(userParams.UserId, userParams.Likers);
                 users = users.Where(u => userLikees.Contains(u.Id));
             }
+            else
+            {
+                users = users.Where(u => u.Id != userParams.UserId);
+                users = users.Where(u => u.Gender == userParams.Gender);
+            }
+
+
 
             if (userParams.MinAge != 18 || userParams.MaxAge != 99)
             {
