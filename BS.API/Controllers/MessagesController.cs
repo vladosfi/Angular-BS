@@ -51,15 +51,20 @@ namespace BS.API.Controllers
             var sender = await this.repo.GetUser(userId);
 
             if (sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
                 return Unauthorized();
+            }
 
             messageForCreationDto.SenderId = userId;
 
             var recipient = await this.repo.GetUser(messageForCreationDto.RecipientId);
 
             if (recipient == null)
+            {
                 return BadRequest("Could not find user");
-            
+            }
+
+
             var message = this.mapper.Map<Message>(messageForCreationDto);
 
             this.repo.Add(message);
@@ -67,7 +72,7 @@ namespace BS.API.Controllers
             if (await this.repo.SaveAll())
             {
                 var messageToReturn = this.mapper.Map<MessageToReturnDto>(message);
-                return CreatedAtRoute("GetMessage", new {id = message.Id}, messageToReturn);
+                return CreatedAtAction(nameof(MessagesController.GetMessage), new {userId, id = message.Id }, messageToReturn);
             }
 
             throw new Exception("Creating the message failed on save");
