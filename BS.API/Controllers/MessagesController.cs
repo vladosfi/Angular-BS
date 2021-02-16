@@ -54,6 +54,8 @@ namespace BS.API.Controllers
                 return Unauthorized();
             }
 
+            System.Console.WriteLine(userId);
+
             messageParams.UserId = userId;
 
             var messagesFromRepo = await this.repo.GetMessagesForUser(messageParams);
@@ -73,8 +75,6 @@ namespace BS.API.Controllers
             {
                 return Unauthorized();
             }
-            System.Console.WriteLine(userId);
-            System.Console.WriteLine(recipientId);
             
             var messagesFromRepo = await this.repo.GetMessagesThread(userId, recipientId);
 

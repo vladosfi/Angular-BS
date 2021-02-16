@@ -58,7 +58,9 @@ namespace BS.API.Data
                     messages = messages.Where(u => u.SenderId == messageParams.UserId);
                     break;
                 default:
-                    messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.IsRead == false);
+                    messages = messages.Where(u => u.RecipientId == messageParams.UserId
+                    && u.RecipientDeleted == false && u.IsRead == false);
+                    System.Console.WriteLine(messageParams.UserId);
                     break;
             }
 
