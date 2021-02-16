@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -45,10 +46,52 @@ namespace BS.API.Controllers
             return Ok(messageFromRepo);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetMessagesForUser(int userId, [FromQuery] MessageParams messageParams)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            messageParams.UserId = userId;
+
+            var messagesFromRepo = await this.repo.GetMessagesForUser(messageParams);
+
+            var messages = this.mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
+
+            Response.AddPagination(messagesFromRepo.CurrentPage, messagesFromRepo.PageSize,
+            messagesFromRepo.TotalCount, messagesFromRepo.TotalPages);
+
+            return Ok(messages);
+        }
+
+        [HttpGet("thread/{recipientId}")]
+        public async Task<IActionResult> GetMessageThread(int userId, int recipientId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+            System.Console.WriteLine(userId);
+            System.Console.WriteLine(recipientId);
+            
+            var messagesFromRepo = await this.repo.GetMessagesThread(userId, recipientId);
+
+            var messageThread = this.mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
+
+            return Ok(messageThread);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
         {
             var sender = await this.repo.GetUser(userId);
+
+            if (sender == null)
+            {
+                return BadRequest("Could not find user");
+            }
 
             if (sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             {
@@ -72,7 +115,7 @@ namespace BS.API.Controllers
             if (await this.repo.SaveAll())
             {
                 var messageToReturn = this.mapper.Map<MessageToReturnDto>(message);
-                return CreatedAtAction(nameof(MessagesController.GetMessage), new {userId, id = message.Id }, messageToReturn);
+                return CreatedAtAction(nameof(MessagesController.GetMessage), new { userId, id = message.Id }, messageToReturn);
             }
 
             throw new Exception("Creating the message failed on save");

@@ -46,16 +46,13 @@ namespace BS.API.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("MessageSend")
+                    b.Property<DateTime>("MessageSent")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("RecipientDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RecipientId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RecipintId")
+                    b.Property<int>("RecipientId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("SenderDeleted")
@@ -192,7 +189,8 @@ namespace BS.API.Migrations
                     b.HasOne("BS.API.Models.User", "Recipient")
                         .WithMany("MessagesReceived")
                         .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BS.API.Models.User", "Sender")
                         .WithMany("MessagesSend")

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BS.API.Migrations
 {
-    public partial class MessageEntityAdded : Migration
+    public partial class AddMessagesEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,12 +14,11 @@ namespace BS.API.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     SenderId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RecipintId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RecipientId = table.Column<int>(type: "INTEGER", nullable: true),
+                    RecipientId = table.Column<int>(type: "INTEGER", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     IsRead = table.Column<bool>(type: "INTEGER", nullable: false),
                     DateRead = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    MessageSend = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    MessageSent = table.Column<DateTime>(type: "TEXT", nullable: false),
                     SenderDeleted = table.Column<bool>(type: "INTEGER", nullable: false),
                     RecipientDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
