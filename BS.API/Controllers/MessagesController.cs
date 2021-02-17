@@ -54,8 +54,6 @@ namespace BS.API.Controllers
                 return Unauthorized();
             }
 
-            System.Console.WriteLine(userId);
-
             messageParams.UserId = userId;
 
             var messagesFromRepo = await this.repo.GetMessagesForUser(messageParams);
@@ -75,7 +73,7 @@ namespace BS.API.Controllers
             {
                 return Unauthorized();
             }
-            
+
             var messagesFromRepo = await this.repo.GetMessagesThread(userId, recipientId);
 
             var messageThread = this.mapper.Map<IEnumerable<MessageToReturnDto>>(messagesFromRepo);
@@ -119,6 +117,62 @@ namespace BS.API.Controllers
             }
 
             throw new Exception("Creating the message failed on save");
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteMessage(int id, int userId)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var messageFromRepo = await this.repo.GetMessage(id);
+
+            if (messageFromRepo.SenderId == userId)
+            {
+                messageFromRepo.SenderDeleted = true;
+            }
+
+            if (messageFromRepo.RecipientId == userId)
+            {
+                messageFromRepo.RecipientDeleted = true;
+            }
+
+            if (messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted)
+            {
+                this.repo.Delete(messageFromRepo);
+            }
+
+            if (await this.repo.SaveAll())
+            {
+                return NoContent();
+            }
+
+            throw new Exception("Error deleting the message");
+        }
+
+        [HttpPost("{id}/read")]
+        public async Task<IActionResult> MarkMessageAsRead(int userId, int id)
+        {
+            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var message = await this.repo.GetMessage(id);
+
+            if (message.RecipientId != userId)
+            {
+                return Unauthorized();
+            }
+
+            message.IsRead = true;
+            message.DateRead = DateTime.UtcNow;
+
+            await this.repo.SaveAll();
+
+            return NoContent();
         }
     }
 }

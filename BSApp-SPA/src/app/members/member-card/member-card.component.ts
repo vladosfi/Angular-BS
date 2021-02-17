@@ -13,7 +13,7 @@ export class MemberCardComponent implements OnInit {
   @Input() user: User;
 
   constructor(
-    private authSerive: AuthService,
+    private authService: AuthService,
     private userService: UserService,
     private alertify: AlertifyService) { }
 
@@ -21,7 +21,7 @@ export class MemberCardComponent implements OnInit {
   }
 
   sendLike(id: number){
-    this.userService.sendLike(this.authSerive.decodedToken.nameid, id).subscribe(data => {
+    this.userService.sendLike(this.authService.decodedToken.nameid, id).subscribe(data => {
       this.alertify.success('You have liked: ' + this.user.knownAs);
     }, error =>{
       this.alertify.error(error);
