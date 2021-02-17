@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TimeagoPipe } from 'ngx-timeago';
+import { tap } from 'rxjs/internal/operators/tap';
 import { Message } from '../_models/message';
 import { PaginatedResult, Pagination } from '../_models/pagination';
 import { AlertifyService } from '../_services/alertify.service';
@@ -17,6 +18,7 @@ export class MessagesComponent implements OnInit {
   pagination: Pagination;
   messageContainer = 'Unread';
   live: TimeagoPipe;
+  unreadMessagesCount: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -26,10 +28,19 @@ export class MessagesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      this.messages = data['messages'].result;
-      this.pagination = data['messages'].pagination;
-    });
+    const currentUserId = +this.authService.decodedToken.nameid;
+
+    this.route.data
+      .subscribe(data => {
+        this.messages = data['messages'].result;
+        this.pagination = data['messages'].pagination;
+
+        for (let i = 0; i < this.messages.length; i++) {
+          if (this.messages[i].isRead === false && this.messages[i].recipientId === currentUserId) {
+            this.unreadMessagesCount++;
+          }
+        }
+      });
   }
 
   loadMessages() {
