@@ -51,7 +51,7 @@ namespace BS.API.Data
 
             switch (messageParams.MessageContainer)
             {
-                case "Invox":
+                case "Inbox":
                     messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.RecipientDeleted == false);
                     break;
                 case "Outbox":

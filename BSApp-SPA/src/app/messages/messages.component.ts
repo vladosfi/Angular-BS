@@ -18,7 +18,6 @@ export class MessagesComponent implements OnInit {
   pagination: Pagination;
   messageContainer = 'Unread';
   live: TimeagoPipe;
-  unreadMessagesCount: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -34,12 +33,6 @@ export class MessagesComponent implements OnInit {
       .subscribe(data => {
         this.messages = data['messages'].result;
         this.pagination = data['messages'].pagination;
-
-        for (let i = 0; i < this.messages.length; i++) {
-          if (this.messages[i].isRead === false && this.messages[i].recipientId === currentUserId) {
-            this.unreadMessagesCount++;
-          }
-        }
       });
   }
 
