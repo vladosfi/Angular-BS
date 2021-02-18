@@ -13,7 +13,7 @@ namespace BS.API.Dtos
 
         public PhotoForCreationDto()
         {
-            DateAdded = DateTime.UtcNow;
+            DateAdded = DateTime.Now;
         }
     }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TimeagoPipe } from 'ngx-timeago';
-import { tap } from 'rxjs/internal/operators/tap';
 import { Message } from '../_models/message';
 import { PaginatedResult, Pagination } from '../_models/pagination';
 import { AlertifyService } from '../_services/alertify.service';
@@ -18,6 +17,7 @@ export class MessagesComponent implements OnInit {
   pagination: Pagination;
   messageContainer = 'Unread';
   live: TimeagoPipe;
+  unreadMessages: number = 0;
 
   constructor(
     private authService: AuthService,
@@ -33,6 +33,9 @@ export class MessagesComponent implements OnInit {
       .subscribe(data => {
         this.messages = data['messages'].result;
         this.pagination = data['messages'].pagination;
+        if(this.messageContainer === 'Unread'){
+          this.unreadMessages = this.pagination.totalItems;
+        }
       });
   }
 

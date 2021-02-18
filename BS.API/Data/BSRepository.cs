@@ -47,6 +47,7 @@ namespace BS.API.Data
             var messages = this.context.Messages
                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+                .AsSplitQuery()
                 .AsQueryable();
 
             switch (messageParams.MessageContainer)
@@ -76,6 +77,7 @@ namespace BS.API.Data
                 .Where(m => m.RecipientId == userId && m.SenderId == recipientId && m.RecipientDeleted == false
                     || m.RecipientId == recipientId && m.SenderId == userId && m.SenderDeleted == false)
                 .OrderByDescending(m => m.MessageSent)
+                .AsSplitQuery()
                 .ToListAsync();
 
             return messages;
@@ -148,7 +150,7 @@ namespace BS.API.Data
 
         private async Task<IEnumerable<int>> GetUserLikes(int id, bool likers)
         {
-            var user = await this.context.Users.Include(x => x.Likers).Include(x => x.Likees).FirstOrDefaultAsync(u => u.Id == id);
+            var user = await this.context.Users.Include(x => x.Likers).Include(x => x.Likees).AsSplitQuery().FirstOrDefaultAsync(u => u.Id == id);
 
             if (likers)
             {

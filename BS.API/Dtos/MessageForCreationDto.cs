@@ -11,7 +11,7 @@ namespace BS.API.Dtos
         
         public MessageForCreationDto()
         {
-            MessageSent = DateTime.UtcNow;
+            MessageSent = DateTime.Now;
         }
     }
 }

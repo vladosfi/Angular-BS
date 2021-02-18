@@ -168,7 +168,7 @@ namespace BS.API.Controllers
             }
 
             message.IsRead = true;
-            message.DateRead = DateTime.UtcNow;
+            message.DateRead = DateTime.Now;
 
             await this.repo.SaveAll();
 

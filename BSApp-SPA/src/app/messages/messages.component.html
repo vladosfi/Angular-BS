@@ -2,7 +2,7 @@
   <div class="row">
     <div class="btn-group">
       <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Unread" (click)="loadMessages()">
-        <i class="fa fa-envelope"></i> Unread <span class="badge badge-light">{{pagination.totalItems}}</span>
+        <i class="fa fa-envelope"></i> Unread <span class="badge badge-light">{{unreadMessages}}</span>
       </button>
       <button class="btn btn-primary" [(ngModel)]="messageContainer" btnRadio="Inbox" (click)="loadMessages()">
         <i class="fa fa-envelope-open"></i> Inbox
