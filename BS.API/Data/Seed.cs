@@ -20,7 +20,7 @@ namespace BS.API.Data
                     CreatePasswordHash("password", out passwordHash, out passwordSalt);
 
                     user.PasswordHash = passwordHash;
-                    user.PasswordSalt = passwordHash;
+                    user.PasswordSalt = passwordSalt;
                     user.Username = user.Username.ToLower();
                     context.Users.Add(user);
                 }
